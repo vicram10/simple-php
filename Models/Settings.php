@@ -8,7 +8,7 @@ class Configuraciones
     function __construct()
     {
         $this->TituloWeb = "MVCBase";
-        $this->DirectorioPrincipal = "/var/www/html/MVCBase";
+        $this->DirectorioPrincipal = "C:\\xampp\\htdocs\\MVCphp";
         $this->DirectorioVista = $this->DirectorioPrincipal."/View";
         $this->DirectorioControlador = $this->DirectorioPrincipal."/Controller";
         $this->DirectorioModelo = $this->DirectorioPrincipal."/Models";
