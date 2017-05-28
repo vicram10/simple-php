@@ -1,0 +1,12 @@
+#PROYECTO MVCphp
+Inicio del Proyecto 28/05/2017
+Primer Commit 28/05/2017
+Autor: vicram10
+
+#COMENTARIO
+- Se realizo con el concepto MVC, donde para poder crear los controladores se debe hacerlo dentro de la carpeta Controller con el formato ControllerXX.php. 
+- Las vistas deben estar dentro de su propia carpeta dentro de la carpeta View. 
+- Se usa conexion con PDO a la base de datos mysql.
+- la variable que se recibe por parametro y que se obtiene para poder saber cual Controller y Metodo usar es el "opt". 
+	En caso que quiera crear un menu y para acceder a un metodo especifico de un controlador se usa http://localhost/index.php?opt=Controller/Metodo
+	Ejemplo: http://localhost/index.php?opt=Home/Index o http://localhost/index.php?opt=Admin/CreateUser
