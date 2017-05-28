@@ -1,3 +1,3 @@
 <?php
-echo 'Cabecera<br/>';
+echo 'Cabecera';
 ?>
