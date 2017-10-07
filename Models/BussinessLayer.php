@@ -42,9 +42,30 @@ class BussinessLayer extends PDO
         }
     }
 
-    public function InsertarRegistros($nombreTabla, $parametros = array())
+    //contador de tablas
+    public function ContadorRegitrosTabla($tabla, $condicional)
     {
         global $conexion, $Utilidades, $Configuraciones;
+        $resultado = array();
+        try
+        {
+            $string = "SELECT * FROM ".$tabla." ".$condicional;
+            $sql = $conexion->prepare($string);
+            $sql->execute();
+            $resultado = $sql->rowCount();
+        }
+        catch(PDOException $PDOError)
+        {
+            $msgError = "SQL ".$string."\nMensaje Error: ".$PDOError->getMessage();
+            $Utilidades->EscribirArchivo($Configuraciones->DirectorioPrincipal."/ErrorLogBussinessLayer.txt", 
+                $msgError);
+        }
+        return (int) $resultado;
+    }
+
+    public function InsertarRegistros($nombreTabla, $parametros = array())
+    {
+        global $conexion, $Utilidades, $Configuraciones, $capaNegocios;
         try
         {
             $comando = "insert into ".$nombreTabla;
@@ -56,29 +77,81 @@ class BussinessLayer extends PDO
                 if (empty($Cols))
                 {
                     $Cols = "(".$columnas;
-                    $Datos = "(". ($valores['tipo'] == "string" ? "'". $valores['dato'] ."'" : $valores['dato']); 
+                    $Datos = "(". ($valores['tipo'] == "string" ? $capaNegocios->EscapeString($valores['dato']) : $valores['dato']); 
                 }else{
                     $Cols = $Cols .", ".$columnas;
-                    $Datos = $Datos. ", ". ($valores['tipo'] == "string" ? "'". $valores['dato'] ."'" : $valores['dato']);
+                    //$Datos = $Datos. ", ". ($valores['tipo'] == "string" ? "'". $valores['dato'] ."'" : $valores['dato']);
+                    $Datos = $Datos. ", ". ($valores['tipo'] == "string" ? $capaNegocios->EscapeString($valores['dato']) : $valores['dato']);
                 }
             }
             $comando = $comando . " ". $Cols .") values ". $Datos . ")";
             $sql = $conexion->prepare($comando);
             $sql->execute();
+            $msgError="";
         }
         catch(PDOException $PDOError)
         {
-            $msgError = "Error al querer Insertar Registros en la tabla ".strtoupper($nombreTabla) ."\nMensaje Error: ".$PDOError->getMessage();
+            $msgError = 'Error al querer Insertar Registros en la tabla '.strtoupper($nombreTabla) .'\nMensaje Error: '.$PDOError->getMessage() . '\nComando SQL: '. $comando;
             $Utilidades->EscribirArchivo($Configuraciones->DirectorioPrincipal."/ErrorLogBussinessLayer.txt", 
                 $msgError);
+            $msgError = str_replace('\n', '<br />', $msgError);
         }
+        return $msgError;
+    }
+
+    public function ActualizarRegistros($condicional, $nombreTabla, $parametros = array())
+    {
+        global $conexion, $Utilidades, $Configuraciones, $capaNegocios;
+        try
+        {
+            $comando = "UPDATE ".$nombreTabla;
+            $valoresCampos = "";
+            $valorCondicional = "";
+            //datos
+            foreach($parametros as $columnas => $valores)
+            {
+                if (empty($valoresCampos))
+                {
+                    $valoresCampos = "SET ".$columnas;
+                    $valoresCampos = $valoresCampos . " = ". ($valores['tipo'] == "string" ? $capaNegocios->EscapeString($valores['dato']) : $valores['dato']); 
+                }else{
+                    $valoresCampos = $valoresCampos . ", ". $columnas;
+                    $valoresCampos = $valoresCampos . " = ". ($valores['tipo'] == "string" ? $capaNegocios->EscapeString($valores['dato']) : $valores['dato']); 
+                }
+            }
+            if (count($condicional) > 0)
+            {
+                foreach($condicional as $columna => $valores)
+                {
+                    if (empty($valorCondicional))
+                    {
+                        $valorCondicional = "WHERE ". $columna . " ". $valores['condicion'] . " ". $valores['dato'];
+                    }else{
+                        $valorCondicional = $valorCondicional ." ". $columna . " ". $valores['condicion'] . " ". $valores['dato'];
+                    }
+                }
+            }
+            $comando = $comando . " ". $valoresCampos . " ". $valorCondicional;
+            $sql = $conexion->prepare($comando);
+            $sql->execute();
+            $msgError="";
+        }
+        catch(PDOException $PDOError)
+        {
+            $msgError = 'Error al querer Insertar Registros en la tabla '.strtoupper($nombreTabla) .'\nMensaje Error: '.$PDOError->getMessage() . '\nComando SQL: '. $comando;
+            $Utilidades->EscribirArchivo($Configuraciones->DirectorioPrincipal."/ErrorLogBussinessLayer.txt", 
+                $msgError);
+            $msgError = str_replace('\n', '<br />', $msgError);
+        }
+        return $msgError;
     }
 
     //devolvemos un array con los datos que queremos
     public function DevuelveVector($string, $parametros = array())
     {
         global $conexion;
-        $sql = $conexion->prepare($string);
+        $resultado = array();
+        $sql = $conexion->prepare($string, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         if (count($parametros)>0)
         {
             $sql->execute($parametros);
@@ -87,7 +160,14 @@ class BussinessLayer extends PDO
             $sql->execute();
             $resultado = $sql->fetchAll();
         }
+        $sql->closeCursor();
         return $resultado;
+    }
+
+    public function EscapeString($string)
+    {
+        global $conexion;
+        return $conexion->quote($string);
     }
 }
 ?>

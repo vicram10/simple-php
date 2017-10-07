@@ -11,14 +11,33 @@ class Load
     //metodo que nos permite inicializar y mostrar la web
     public function MostrarWeb()
     {
-        global $Configuraciones, $txt, $context, $Utilidades;
-        //obtenemos la vista a ser mostrada
-        $Utilidades->IncluirView('Header');
-        if (!empty($context['msgError']))
-            $Utilidades->IncluirView('Error');
-        else
-            $Utilidades->IncluirView($context['Controller']."/".$context['View']);
-        $Utilidades->IncluirView('Footer');
+        global $Load, $Configuraciones, $txt, $context, $Utilidades;
+        //menu principal solo los habilitado = 'SI'
+        $Load->MenuPrincipal('SI');
+        //es json lo que queremos mostrar?
+        if ($context['View'] != 'json')
+        {
+            //obtenemos la vista a ser mostrada
+            $Utilidades->IncluirView('Header');
+            if (!empty($context['msgError']))
+                $Utilidades->IncluirView('Error');
+            else
+                $Utilidades->IncluirView($context['Controller']."/".$context['View']);
+            $Utilidades->IncluirView('Footer');
+        }else{
+            $Utilidades->IncluirView('json');
+        }
+    }
+
+    public function ModoDebug()
+    {
+        global $datosUsuario, $context, $txt;
+        echo '<div class="note note-warning">$datosUsuario</div>';
+        var_dump($datosUsuario);
+        echo '<div class="note note-warning">$context</div>';
+        var_dump($context);
+        echo '<div class="note note-warning">$txt</div>';
+        var_dump($txt);
     }
 }
 
