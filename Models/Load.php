@@ -41,4 +41,15 @@ class Load
     }
 }
 
+
+function EscribirURLAmigable($buffer)
+{
+    global $Configuraciones, $txt, $context;
+    $url = $Configuraciones->ScriptUrl;
+    $urlOriginal = $Configuraciones->UrlPrincipal;
+    $extension = $Configuraciones->UrlAmigableExtension;
+    $buffer = preg_replace("/\bindex.php\?opt=(.+)\b/i", "$1", $buffer);	
+    return $buffer;
+}
+
 ?>

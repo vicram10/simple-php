@@ -19,7 +19,10 @@ $capaNegocios = new BussinessLayer;
 $Utilidades = new Utilidades;
 $Load = new Load();
 $capaNegocios->AbrirConexion();
-$Configuraciones->CargasIniciales();   
+$Configuraciones->CargasIniciales();  
+//si esta activo las url amigables no lo usaremos aun debemos mejorar
+/*if ($Configuraciones->UrlAmigable)
+   ob_start('EscribirURLAmigable');*/ 
 //inicializamos los valores principales para luego mostrar los resultados 
 call_user_func('InicializacionWeb');  
 //funcion principal
