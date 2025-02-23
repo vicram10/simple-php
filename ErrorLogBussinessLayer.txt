@@ -1,7 +1,0 @@
-#Sunday 21/May/2017 23:41:37
-Error al querer Insertar Registros en la tabla usuarios
-Mensaje Error: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'VMR' for key 'PRIMARY'
-Comando=insert into usuarios (user_key, user_name, user_pass, user_add, user_depart, user_documento, user_sucursal, user_estado) values ('VMR', 'VICTOR RAMIREZ', '12345678', 1495424497, 1, '2530723', 1, 'ACTIVO')
-#Sunday 21/May/2017 23:43:13
-Error al querer Insertar Registros en la tabla USUARIOS
-Mensaje Error: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'VMR' for key 'PRIMARY'
