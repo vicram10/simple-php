@@ -2,7 +2,7 @@
 
 namespace Src\Core;
 
-use Db\Models\MySqlDriver;
+use Db\Core\MySqlDriver;
 use Dotenv\Dotenv;
 use Illuminate\Http\Request;
 use Src\Core\Router;
@@ -22,10 +22,13 @@ class AppFactory {
         
         $dbDriver = MySqlDriver::allocInstanceFor();
         
-        require join('/',[Defs::getRootDirectory(),'src','Routes','web.php']);
+        $srcFolder = join('/',[Defs::getRootDirectory(),'src']);
+        require join('/',[$srcFolder,'Routes','web.php']);
+        require join('/',[$srcFolder,'Views','view.php']);
 
-        Router::dispatch($dbDriver);
+        Router::dispatch($dbDriver);        
     }
+
 
     //-----------
     // privates

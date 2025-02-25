@@ -1,9 +1,9 @@
 <?php
 
-namespace Db\Models;
+namespace Db\Core;
 
 use Src\Core\Defs;
-
+use Db\Core\DbDriver;
 
 class MySqlDriver 
 extends DbDriver {

@@ -5,6 +5,6 @@ namespace Src\Controllers;
 class WelcomeController 
 extends DefaultController {
     function index() {
-        echo 'Hello, World!';
+        return $this->renderView('welcome.hello');
     }
 }

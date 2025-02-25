@@ -1,12 +1,13 @@
 <?php
 
-namespace Db\Models;
+namespace Db\Core;
 
 use DateTimeImmutable;
 use Src\Core\BaseObject;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\ConnectionInterface;
 use Src\Core\Defs;
+use Db\Core\DbAdapter;
 
 abstract class DbDriver 
 implements DbAdapter { 

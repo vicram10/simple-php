@@ -1,6 +1,6 @@
 <?php
 
-namespace Db\Models;
+namespace Db\Core;
 
 use DateTimeImmutable;
 

@@ -1,0 +1,9 @@
+{% if data.isProd == false %}
+    <div style="margin-top:20px;padding:20px;width:100%;background-color:gray;border-radius:5px;">
+        <h3 style="color:white;">Debug</h3>
+        <div style="color:white;">Dumping all variables</div>        
+        <pre>{{ data|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+    </div>
+{% endif %}
+
+

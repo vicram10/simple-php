@@ -2,7 +2,7 @@
 
 namespace Src\Core;
 
-use Db\Models\DbDriver;
+use Db\Core\DbDriver;
 
 class Router {
     private static $routes = [];
@@ -43,7 +43,8 @@ class Router {
                 $method = $callback[1];
 
                 if (method_exists($controller, $method)) {
-                    call_user_func([$controller, $method]);
+                    $template = call_user_func([$controller, $method]);
+                    echo $template;
                 } else {
                     http_response_code(500);
                     echo "Error: Método '$method' no encontrado en la clase " . $callback[0];
